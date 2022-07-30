@@ -1,0 +1,28 @@
+Models:
+    Users
+        -id
+        -email
+        -Profile Pic
+        -Name
+        -Bio
+        -created_at
+        -[has_many:posts]
+
+    Posts
+        -Image
+        -Caption
+        -created_at
+        -belongs_to: Reference Users
+
+Routes:
+GET    /api/users Show All
+POST   /api/users Create
+GET    /api/users/:id Get Single
+PATCH  /api/users/:id Edit
+DELETE /api/users/:id Delete
+
+GET    /api/posts Show All
+POST   /api/posts Create
+GET    /api/posts/:id Get Single
+PATCH  /api/posts/:id Edit
+DELETE /api/posts/:id Delete

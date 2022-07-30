@@ -19,8 +19,9 @@ module InstaBackend
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
-    ############FOR APIS##############
-    config.paths.add File.join('app', 'api'), glob: File.join('**', '*.rb')
-    config.autoload_paths += Dir[Rails.root.join('app', 'api', '*')]
+    # ############FOR APIS##############
+    # config.paths.add File.join('app', 'api'), glob: File.join('**', '*.rb')
+    # config.autoload_paths += Dir[Rails.root.join('app', 'api', '*')]
+    # InstaUser::API.compile!
   end
 end
