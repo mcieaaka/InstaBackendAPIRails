@@ -4,4 +4,5 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
   mount InstaUser::API => '/'
+  mount InstaPost::PostAPI => '/'
 end
