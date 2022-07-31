@@ -8,6 +8,9 @@ gem "bcrypt",                     "3.1.18"
 gem "faker",                      "2.21.0"
 gem "grape"
 gem "grape_on_rails_routes"
+gem 'active_storage_validations', '0.8.2'
+gem 'image_processing', '1.9.3'
+gem 'mini_magick', '4.9.5'
 gem "sassc-rails",                "2.1.2"
 gem "sprockets-rails",            "3.4.2"
 gem "importmap-rails",            "1.1.0"
