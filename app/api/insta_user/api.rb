@@ -35,7 +35,8 @@ module InstaUser
             route_param :id do
                 get do
                     user = User.find(params[:id])
-                    present user
+                    # present user
+                    {result:{'user':user,'image':user.image}}
                 end
             end
 

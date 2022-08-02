@@ -8,15 +8,32 @@ module InstaPost
             desc 'Create a new Post'
             params do
                 requires :caption, type:String #Text and String??
+                # byebug
+                # requires :images,  type:Array do
+                #     requires :image, :type => Rack::Multipart::UploadedFile
+                # end
             end
              #Since no session, hence user id in route
             post do
+                # byebug
                 @post = Post.new({user_id:params[:user_id],caption:params[:caption]})
                 file = ActionDispatch::Http::UploadedFile.new(params[:image])
                 @post.image = file
+                # @post.images = params[:images]
                 @post.save!
             end
             
+            desc 'Get all posts'
+            get  do
+                post = Post.all
+                present post
+            end
+
+            desc 'Get all posts of a user'
+            get '/user/:uid' do
+                posts = Post.where(user_id: params[:uid])
+                present posts
+            end
 
             desc 'Get Specific Post'
             route_param :id do
