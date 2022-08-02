@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   # root "articles#index"
   mount InstaUser::API => '/'
   mount InstaPost::PostAPI => '/'
+  mount InstaUser::SessionsAPI => '/'
 end

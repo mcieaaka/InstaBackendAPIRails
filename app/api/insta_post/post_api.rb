@@ -2,7 +2,7 @@ module InstaPost
     class PostAPI < Grape::API
         version 'v1',using: :path
         format :json
-        prefix ':uid/api'
+        prefix 'api'
 
         resource :insta_post do 
             desc 'Create a new Post'
@@ -11,7 +11,7 @@ module InstaPost
             end
              #Since no session, hence user id in route
             post do
-                @post = Post.new({caption:params[:caption],user_id:params[:uid]})
+                @post = Post.new({user_id:params[:user_id],caption:params[:caption]})
                 file = ActionDispatch::Http::UploadedFile.new(params[:image])
                 @post.image = file
                 @post.save!
@@ -26,7 +26,7 @@ module InstaPost
                 end
             end
 
-            desc 'Delete User'
+            desc 'Delete Post'
             route_param :id do
                 delete do
                     Post.find(params[:id]).destroy

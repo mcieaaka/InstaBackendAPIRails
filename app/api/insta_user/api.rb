@@ -11,12 +11,18 @@ module InstaUser
                 requires :name, type:String
                 requires :bio, type:String
                 # requires :image, 
+                #Grape Text
             end
             post do
-                @user=User.new({email:params[:email], name:params[:name], bio:params[:bio]})
+                @user=User.new({email:params[:email], name:params[:name], bio:params[:bio],password:params[:password],password_confirmation:params[:password_confirmation]})
                 file = ActionDispatch::Http::UploadedFile.new(params[:image])
                 @user.image = file
-                @user.save!
+                if @user.save
+                    log_in @user
+                    present @user
+                else
+                    present @user.errors
+                end
             end
 
             desc 'Return all Users'
