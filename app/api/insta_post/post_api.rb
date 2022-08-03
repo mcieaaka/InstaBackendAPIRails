@@ -1,5 +1,32 @@
 module InstaPost
     class PostAPI < Grape::API
+        helpers do
+            def session
+                env['rack.session']
+            end
+
+            def login_in (user)
+                session[:user_id] = user.id
+            end
+
+            def current_user
+                if session[:user_id]
+                    @current_user ||= User.find_by(id: session[:user_id])
+                end
+            end
+
+            def logged_in?
+                !current_user.nil?
+            end
+
+            def log_out
+                session.delete(:user_id)
+                # reset_session
+                @current_user = nil
+            end
+        end
+
+        use ActionDispatch::Session::CookieStore
         version 'v1',using: :path
         format :json
         prefix 'api'
@@ -9,17 +36,18 @@ module InstaPost
             params do
                 requires :caption, type:String #Text and String??
                 # byebug
-                # requires :images,  type:Array do
-                #     requires :image, :type => Rack::Multipart::UploadedFile
-                # end
+                requires :images,  type:Array do
+                    requires :image, :type => Rack::Multipart::UploadedFile
+                end
             end
              #Since no session, hence user id in route
             post do
                 # byebug
-                @post = Post.new({user_id:params[:user_id],caption:params[:caption]})
-                file = ActionDispatch::Http::UploadedFile.new(params[:image])
-                @post.image = file
-                # @post.images = params[:images]
+                @post = Post.new({user_id:current_user.id,caption:params[:caption]})
+                # file = ActionDispatch::Http::UploadedFile.new(params[:image])
+                # @post.image = file
+                # puts params[:images]
+                @post.images.attach(filename:params[:images],io:params[:images])# = params[:images]
                 @post.save!
             end
             

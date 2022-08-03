@@ -1,5 +1,32 @@
 module InstaUser
     class API < Grape::API
+        helpers do
+            def session
+                env['rack.session']
+            end
+
+            def login_in (user)
+                session[:user_id] = user.id
+            end
+
+            def current_user
+                if session[:user_id]
+                    @current_user ||= User.find_by(id: session[:user_id])
+                end
+            end
+
+            def logged_in?
+                !current_user.nil?
+            end
+
+            def log_out
+                session.delete(:user_id)
+                # reset_session
+                @current_user = nil
+            end
+        end
+
+        use ActionDispatch::Session::CookieStore
         version 'v1', using: :path
         format :json
         prefix 'api'
@@ -18,7 +45,7 @@ module InstaUser
                 file = ActionDispatch::Http::UploadedFile.new(params[:image])
                 @user.image = file
                 if @user.save
-                    log_in @user
+                    login_in @user
                     present @user
                 else
                     present @user.errors
