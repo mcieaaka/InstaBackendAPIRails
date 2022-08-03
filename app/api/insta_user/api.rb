@@ -36,7 +36,7 @@ module InstaUser
                 get do
                     user = User.find(params[:id])
                     # present user
-                    {result:{'user':user,'image':user.image}}
+                    {result:{'user':user,'image':user.image,'pic':user.image.blob}}
                 end
             end
 

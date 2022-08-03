@@ -39,7 +39,8 @@ module InstaPost
             route_param :id do
                 get do
                     post = Post.find(params[:id])
-                    present post
+                    # present post
+                    {result:{'post':post,'pic':post.image.blob}}
                 end
             end
 
