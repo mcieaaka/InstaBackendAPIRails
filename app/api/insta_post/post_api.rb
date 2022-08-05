@@ -45,7 +45,7 @@ module InstaPost
                 # byebug
                 @post = Post.new({user_id:current_user.id,caption:params[:caption]})
                 # file = ActionDispatch::Http::UploadedFile.new(params[:image])
-                # @post.images = file
+                # @post.image = file
                 # puts params[:images]
                 @post.images.attach(filename:params[:images],io:params[:images])# = params[:images]
                 @post.save!
