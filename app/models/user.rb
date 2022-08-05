@@ -2,6 +2,7 @@ class User < ApplicationRecord
     has_one_attached :image
     has_many:posts, dependent: :destroy
     has_secure_password
+    has_many :comments
 
     before_save { email.downcase! }
     validates(:name, presence: true, length: { maximum: 50 })

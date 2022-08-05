@@ -6,4 +6,5 @@ Rails.application.routes.draw do
   mount InstaUser::API => '/'
   mount InstaPost::PostAPI => '/'
   mount InstaUser::SessionsAPI => '/'
+  mount InstaPost::CommentAPI => '/'
 end

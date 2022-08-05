@@ -1,6 +1,5 @@
-module InstaUser
-    class SessionsAPI < Grape::API
-    # include HelperMethods::Helpers
+module InstaPost
+    class CommentAPI < Grape::API
         helpers do
             def session
                 env['rack.session']
@@ -32,24 +31,19 @@ module InstaUser
         format :json
         prefix 'api'
 
-        # params do
-        #     requires :session, type: JSON
-        # end
-        desc 'Create a session'
-        post :session do
-            user = User.find_by(email:params[:session][:email].downcase)
-            if user && user.authenticate(params[:session][:password])
-                login_in user
-                {result:{'login_message':"Successful Login"}}
-            else
-                {result:{'error':"Invalid email and password combination."}}
-            end
-        end
+        resource :insta_post do
+            route_param :id do
+                desc "Post a comment"
+                post "/comment" do
+                    @comment = Comment.new({user_id:current_user.id,post_id:params[:id],body:params[:body]})
+                    @comment.save!
+                end
 
-        desc 'End a session'
-        delete :session do
-            log_out
-            {result:{'LogOut':"Successful"}}
+                desc "Get all comments on a post"
+                get "/comment" do
+                    comments = Comment.where(post_id:params[:id])
+                end
+            end
         end
 
     end
