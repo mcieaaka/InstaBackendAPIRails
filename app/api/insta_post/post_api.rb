@@ -10,20 +10,24 @@ module InstaPost
         resource :insta_post do 
             desc 'Create a new Post'
             params do
-                requires :caption, type:String #Text and String??
-                # byebug
-                requires :images,  type:Array do
-                    requires :image, :type => Rack::Multipart::UploadedFile
-                end
+                requires :caption, type:String
+                # requires :images,  type:Array do
+                #     requires :image, :type => ActionDispatch::Http::UploadedFile,
+                #         coerce_with: -> (image){ActionDispatch::Http::UploadedFile.new(image)}
+                # end
             end
-             #Since no session, hence user id in route
             post do
-                # byebug
                 @post = Post.new({user_id:current_user.id,caption:params[:caption]})
+                
                 # file = ActionDispatch::Http::UploadedFile.new(params[:image])
                 # @post.image = file
-                # puts params[:images]
-                @post.images.attach(filename:params[:images],io:params[:images])# = params[:images]
+                params[:images].each do |i|
+                    puts i
+                    atimg = AttachedImage.new({user_id:current_user.id,post_id:@post.id})
+                    file = ActionDispatch::Http::UploadedFile.new(i[:image])
+                    atimg.image = file
+                end
+                # @post.images.attach(filename:params[:images],io:params[:images])# = params[:images]
                 @post.save!
             end
             
